@@ -1,10 +1,10 @@
 ** HEADER -----------------------------------------------------
 **  DO-FILE METADATA
-    //  algorithm name			    fan_fao_003.do
+    //  algorithm name			    fan_fao_004.do
     //  project:				        Food and Nutrition (FaN)
     //  analysts:				       	Ian HAMBLETON
     // 	date last modified	    18-OCT-2018
-    //  algorithm task			    Land Use graphics
+    //  algorithm task			    Employment in Agriculture graphics
 
     ** General algorithm set-up
     version 15
@@ -21,15 +21,11 @@
 
     ** Close any open log file and open a new log file
     capture log close
-    log using "`logpath'\fan_fao_003", replace
+    log using "`logpath'\fan_fao_004", replace
 ** HEADER -----------------------------------------------------
 use "`datapath'/version01/2-working/landuse_modelled_01", clear
 drop IndicatorName
 
-
-
-
-/*
 ** Rehspae to LONG
 reshape long y, i(CountryCode subregion Region) j(year)
 

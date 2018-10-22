@@ -52,6 +52,7 @@ replace rid = 1 if cid==23
 gsort -value511
 list cid rid value511 purban if year==2000
 
+
 ** GRAPHIC 1A. Countries in 2000
 #delimit ;
 	gr twoway
