@@ -38,11 +38,13 @@ replace region = 2 if cid==5504
 replace region = 3 if cid==5503
 replace region = 4 if cid==5502
 replace region = 5 if cid==5206
-label define region_ 1 "SIDS" 2 "Polynesia" 3 "Micronesia" 4 "Melanesia" 5 "Caribbean"
+replace region = 6 if cid==5400
+label define region_ 1 "SIDS" 2 "Polynesia" 3 "Micronesia" 4 "Melanesia" 5 "Caribbean" 6 "Europe"
 label values region region_
 
+
 ** FIRST and LAST value for EACH PARTICIPANT COUNTRY
-keep if rid>=1 & rid<=4
+** keep if rid>=1 & rid<=4
 keep if year>=1990
 sort cid year
 gen ykeep = 0
@@ -173,6 +175,66 @@ preserve
 
 			legend(off)
       name(figure2D)
+            ;
+		#delimit cr
+restore
+
+
+** GRAPHIC. EUROPE
+preserve
+	keep if europe==1
+	drop if pag2==.
+	sort pag1
+	gen cid2 = _n
+	order cid2, after(cid)
+	labmask cid2, values(Area)
+
+	#delimit ;
+	gr twoway
+			/// Colours use RGB system
+			(sc cid2 pag1 , msize(3) m(o) mlc(gs10) mfc(purple%50) mlw(0.1) )
+			,
+			plotregion(c(gs16) ic(gs16) ilw(thin) lw(thin))
+			graphregion(color(gs16) ic(gs16) ilw(thin) lw(thin))
+			ysize(15) xsize(15)
+
+			xlab(0(20)80, labs(4) labc(gs6) nogrid angle(0) notick)
+			xtitle("", margin(r=3) size(3.5))
+			xscale(range(0(10)80) noline)
+
+			ylab(1(1)41, value
+			labs(2) labc(gs6) nogrid notick glc(gs14) angle(0) format(%9.0f) labgap(1))
+			ytitle("", margin(r=3) size(3.5))
+			yscale(range(0(1)42) noline)
+
+			legend(off)
+			name(figure2E)
+						;
+		#delimit cr
+
+	#delimit ;
+	gr twoway
+		  /// Colours use RGB system
+			/// Polynesia
+			(rspike pag1 pag2 cid2, horiz lc(gs12) lw(0.25))
+			(sc cid2 pag1 , msize(3) m(o) mlc(gs10) mfc(purple%50) mlw(0.1) )
+			(sc cid2 pag2 , msize(3) m(o) mlc(gs0) mfc("orange%50") mlw(0.1) )
+		  ,
+			plotregion(c(gs16) ic(gs16) ilw(thin) lw(thin))
+			graphregion(color(gs16) ic(gs16) ilw(thin) lw(thin))
+			ysize(15) xsize(15)
+
+			xlab(0(20)80, labs(4) labc(gs6) nogrid angle(0) notick)
+			xtitle("", margin(r=3) size(3.5))
+			xscale(range(0(10)80) noline)
+
+		 	ylab(1(1)41, value
+			labs(2) labc(gs6) nogrid notick glc(gs14) angle(0) format(%9.0f) labgap(1))
+			ytitle("", margin(r=3) size(3.5))
+			yscale(range(0(1)42) noline)
+
+			legend(off)
+      name(figure2F)
             ;
 		#delimit cr
 restore
