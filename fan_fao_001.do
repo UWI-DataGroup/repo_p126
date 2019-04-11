@@ -24,7 +24,7 @@
     log using "`logpath'\fan_fao_001", replace
 ** HEADER -----------------------------------------------------
 
-/*
+
 
 ** ------------------------------------------------------------
 ** FILE 1 - POPULATION and URBANISATION
@@ -963,7 +963,7 @@ save "`datapath'/version01/2-working/landuse_modelled_01", replace
 
 ** ------------------------------------------------------------
 ** FAO DATASETS
-** FILE 4 - 
+** FILE 4 -
 ** We look at Labour force surveys AND Employment in Agriculture
 ** ------------------------------------------------------------
 

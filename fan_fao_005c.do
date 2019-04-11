@@ -215,7 +215,7 @@ bysort id : egen min = min(est) if group==1
 bysort id : egen max = max(est) if group==1
 
 
-/*
+
 ** GRAPHIC 2 - without SVG
 ** ---------------------------------------------------------------------------
 ** X-axis
@@ -305,7 +305,7 @@ recode cid 7=1 8=2 9=3 10=4
 			;
 	#delimit cr
 restore
-*/
+/*
 
 ** -----------------------------------
 ** For the last graphic, plot the FOOD IMPORT METRIC AGAINST LAND AREA...
