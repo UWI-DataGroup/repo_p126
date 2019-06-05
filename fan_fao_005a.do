@@ -185,7 +185,7 @@ replace group02 = 1 if id==148 | id==178 | id==4
 ** 198 	na / europe
 gen group03 = 0
 replace group03 = 1 if id==148 | id==178 | id==4 | id==135 | id==176 | id==2 | id==198
-
+/*
 gen group = group03
 keep if group==1
 gen cid = .
