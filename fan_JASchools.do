@@ -85,7 +85,7 @@ order level, after(parish)
 order gender, after(level)
 order time, after(gender)
 order class, after(time)
-
+/*
 
 ** Tabulatiion by School Type and Urban/Rural Status
 ** Grouping "All age" (2), Primary (4), Primary and Junior High (5)  
@@ -98,8 +98,36 @@ label var level2 "Primary and Secondary Schools"
 tab level2 locale 
 tab locale level2  
 
+recode locale 1=2
+tab locale level2  
 
 
+** Data from 
+** Nutritional Quality of Lunches Served in South East England Hospital Staff Canteens
+** Jaworowska. Nutrients. 2018
 
+** DATA
+** totfat = total fat (g/100g)
+** salt = salt (g/100g)
+clear 
+input num totfat salt 
+1   0.6     0.49
+2   6.0     0.36
+3   5.7     0.61
+4   3.1     0.55
+5   7.0     0.30
+6   12.9    0.61
+7   3.3     1.03
+8   3.1     0.27
+9   5.0     0.49
+10  14.4    0.59
+11  8.1     0.35
+12  9.7     1.12
+13  13.2    0.80
+end 
 
+egen me_tf = mean(totfat)
+egen me_sa = mean(salt)
+egen sd_tf = sd(totfat) 
+egen sd_sa = sd(salt) 
 
