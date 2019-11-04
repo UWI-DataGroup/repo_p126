@@ -2,8 +2,8 @@
 **  DO-FILE METADATA
 //  algorithm name						FaN Jamaica Schools
 //  project:							FaN
-//  analysts:							Catherine Brown
-//	date last modified		            05-Jun-2019
+//  analysts:							Catherine Brown / Ian Hambleton
+//	date last modified		            31-Oct-2019
 
 ** General algorithm set-up
 version 15
@@ -85,7 +85,7 @@ order level, after(parish)
 order gender, after(level)
 order time, after(gender)
 order class, after(time)
-/*
+
 
 ** Tabulatiion by School Type and Urban/Rural Status
 ** Grouping "All age" (2), Primary (4), Primary and Junior High (5)  
@@ -101,6 +101,135 @@ tab locale level2
 recode locale 1=2
 tab locale level2  
 
+gen stype = level2 
+gen ltype = locale  
+label var stype "School type (1=Primary, 2=Secondary)"
+label define _stype 1 "Primary" 2 "Secondary", modify 
+label values stype _stype 
+label var ltype "Location type (1=Urban, 2=Rural" 
+recode ltype 3=1
+label define _ltype 1 "Urban" 2 "Rural", modify 
+label values ltype _ltype 
+
+keep id school stype ltype parish
+order id school stype ltype parish
+drop if stype == . 
+
+** Randomly order schools. Stratified by
+**  - (level2)  --> Primary / Secondary
+**  - (locale)  --> Urban / Rural
+
+set seed 150219
+generate rnum = runiform(1,100)
+
+
+** GROUP 1: URBAN PRIMARY
+preserve 
+    set linesize 120 
+    sort rnum 
+    keep if stype==1 & ltype==1 
+    gen order = _n
+    keep in 1/20
+    list order rnum school stype ltype parish in 1/20, clean noobs
+
+    ** Schools 1 to 10 
+    export excel order school stype ltype parish in 1/10 using "`datapath'\version01\1-input\20191031_fan_sampled_schools.xlsx",    ///
+            sheet("urban_primary", replace) cell(A3) first(var)
+    ** Schools 11 to 20
+    export excel order school stype ltype parish in 11/20 using "`datapath'\version01\1-input\20191031_fan_sampled_schools.xlsx",    ///
+            sheet("urban_primary", modify) cell(A15) 
+    putexcel set "`datapath'\version01\1-input\20191031_fan_sampled_schools.xlsx", sheet("urban_primary") modify
+    putexcel A1 = "PRIMARY SCHOOLS: URBAN" , bold  font("Calibri", 16, "black")     
+    putexcel A2 = "FIRST 10 SCHOOLS CHOSEN" , bold font("Calibri", 12, "black")      
+    putexcel A14 = "SCHOOLS 11- 20: BACKUP SCHOOL CHOICES (WORK DOWN LIST)" , bold font("Calibri", 12, "black")
+    putexcel (A3:A13), hcenter 
+    putexcel (A15:A25), hcenter 
+restore
+
+
+** GROUP 2: URBAN SECONDARY
+preserve 
+    set linesize 120 
+    sort rnum 
+    keep if stype==2 & ltype==1 
+    gen order = _n
+    keep in 1/20
+    list order rnum school stype ltype parish in 1/20, clean noobs
+
+   ** Schools 1 to 10 
+    export excel order school stype ltype parish in 1/10 using "`datapath'\version01\1-input\20191031_fan_sampled_schools.xlsx",    ///
+            sheet("urban_secondary", replace) cell(A3) first(var)
+    ** Schools 11 to 20
+    export excel order school stype ltype parish in 11/20 using "`datapath'\version01\1-input\20191031_fan_sampled_schools.xlsx",    ///
+            sheet("urban_secondary", modify) cell(A15) 
+    putexcel set "`datapath'\version01\1-input\20191031_fan_sampled_schools.xlsx", sheet("urban_secondary") modify
+    putexcel A1 = "SECONDARY SCHOOLS: URBAN" , bold  font("Calibri", 16, "black")     
+    putexcel A2 = "FIRST 10 SCHOOLS CHOSEN" , bold font("Calibri", 12, "black")      
+    putexcel A14 = "SCHOOLS 11- 20: BACKUP SCHOOL CHOICES (WORK DOWN LIST)" , bold font("Calibri", 12, "black")
+    putexcel (A3:A13), hcenter 
+    putexcel (A15:A25), hcenter 
+restore
+
+** GROUP 3: RURAL PRIMARY
+preserve 
+    set linesize 120 
+    sort rnum 
+    keep if stype==1 & ltype==2 
+    gen order = _n
+    keep in 1/20
+    list order rnum school stype ltype parish in 1/20, clean noobs
+
+   ** Schools 1 to 10 
+    export excel order school stype ltype parish in 1/10 using "`datapath'\version01\1-input\20191031_fan_sampled_schools.xlsx",    ///
+            sheet("rural_primary", replace) cell(A3) first(var)
+    ** Schools 11 to 20
+    export excel order school stype ltype parish in 11/20 using "`datapath'\version01\1-input\20191031_fan_sampled_schools.xlsx",    ///
+            sheet("rural_primary", modify) cell(A15) 
+    putexcel set "`datapath'\version01\1-input\20191031_fan_sampled_schools.xlsx", sheet("rural_primary") modify
+    putexcel A1 = "PRIMARY SCHOOLS: RURAL" , bold  font("Calibri", 16, "black")     
+    putexcel A2 = "FIRST 10 SCHOOLS CHOSEN" , bold font("Calibri", 12, "black")      
+    putexcel A14 = "SCHOOLS 11- 20: BACKUP SCHOOL CHOICES (WORK DOWN LIST)" , bold font("Calibri", 12, "black")
+    putexcel (A3:A13), hcenter 
+    putexcel (A15:A25), hcenter 
+restore
+
+** GROUP 2: RURAL SECONDARY
+preserve 
+    set linesize 120 
+    sort rnum 
+    keep if stype==2 & ltype==2 
+    gen order = _n
+    keep in 1/20
+    list order rnum school stype ltype parish in 1/20, clean noobs
+
+   ** Schools 1 to 10 
+    export excel order school stype ltype parish in 1/10 using "`datapath'\version01\1-input\20191031_fan_sampled_schools.xlsx",    ///
+            sheet("rural_secondary", replace) cell(A3) first(var)
+    ** Schools 11 to 20
+    export excel order school stype ltype parish in 11/20 using "`datapath'\version01\1-input\20191031_fan_sampled_schools.xlsx",    ///
+            sheet("rural_secondary", modify) cell(A15) 
+    putexcel set "`datapath'\version01\1-input\20191031_fan_sampled_schools.xlsx", sheet("rural_secondary") modify
+    putexcel A1 = "SECONDARY SCHOOLS: RURAL" , bold  font("Calibri", 16, "black")     
+    putexcel A2 = "FIRST 10 SCHOOLS CHOSEN" , bold font("Calibri", 12, "black")      
+    putexcel A14 = "SCHOOLS 11- 20: BACKUP SCHOOL CHOICES (WORK DOWN LIST)" , bold font("Calibri", 12, "black")
+    putexcel (A3:A13), hcenter 
+    putexcel (A15:A25), hcenter 
+restore
+
+
+
+/*
+bysort ltype stype: sample 10
+
+
+
+
+
+
+
+
+
+/*
 
 ** Data from 
 ** Nutritional Quality of Lunches Served in South East England Hospital Staff Canteens
